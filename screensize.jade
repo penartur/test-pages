@@ -29,3 +29,25 @@ html
 				each val, index in list
 					if index > 0
 						.size-block(class = "height-" + index + unit + "-block") #{list[index-1]}#{unit} < height < #{val}#{unit}
+		.js-block
+			p
+				| JS width: 
+				span#js-width-mm
+				| mm
+			p
+				| JS height: 
+				span#js-height-mm
+				| mm
+			p
+				| JS diagonal: 
+				span#js-diagonal-in
+				| in
+		script.
+			var svgEl = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+			var screenWidthMillimeters = svgEl.screenPixelToMillimeterX * window.screen.width;
+			var screenHeightMillimeters = svgEl.screenPixelToMillimeterY * window.screen.height;
+			var screenDiagonalMillimeters = Math.sqrt(Math.pow(screenWidthMillimeters, 2) + Math.pow(screenHeightMillimeters, 2)); // pythagorean theorem
+			var screenDiagonalInches = (screenDiagonalMillimeters / 10 / 2.54); // (mm / 10mm/cm) / 2.54cm/in = in
+			document.getElementById('js-width-mm').innerHTML = screenWidthMillimeters;
+			document.getElementById('js-height-mm').innerHTML = screenHeightMillimeters;
+			document.getElementById('js-diagonal-in').innerHTML = screenDiagonalInches;
