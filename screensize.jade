@@ -1,28 +1,31 @@
 doctype html
 -var list = [];
--for (var i = 0; i < 100; i++) { list[i] = i; }
--list[100] = 1000;
--list[101] = 10000;
--list[102] = 100000;
+-for (var i = 0; i < 100; i++) { list.push(i); }
+-list.push(100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100000, 200000, 500000, 1000000, 100000000);
+-var units = ['in', 'cm', 'em', 'pt', 'px'];
 html
 	head
 		style
+			| .unit-block { border: solid 1px black }
 			| .size-block { display: none }
-		each val, index in list
-			if index > 0
-				style
-					| 
-					| @media (min-device-width: #{list[index-1]}cm) and (max-device-width: #{val}cm) {
-					|     .size-block.width-#{index}-block { display: block }
-					| }
-					| @media (min-device-height: #{list[index-1]}cm) and (max-device-height: #{val}cm) {
-					|     .size-block.height-#{index}-block { display: block }
-					| }
-					| 
+		each unit in units
+			each val, index in list
+				if index > 0
+					style
+						| 
+						| @media (min-device-width: #{list[index-1]}#{unit}) and (max-device-width: #{val}#{unit}) {
+						|     .size-block.width-#{index}#{unit}-block { display: block }
+						| }
+						| @media (min-device-height: #{list[index-1]}#{unit}) and (max-device-height: #{val}#{unit}) {
+						|     .size-block.height-#{index}#{unit}-block { display: block }
+						| }
+						| 
 	body
-		each val, index in list
-			if index > 0
-				.size-block(class = "width-" + index + "-block") #{list[index-1]}cm < width < #{val}cm
-		each val, index in list
-			if index > 0
-				.size-block(class = "height-" + index + "-block") #{list[index-1]}cm < height < #{val}cm
+		each unit in units
+			.unit-block
+				each val, index in list
+					if index > 0
+						.size-block(class = "width-" + index + unit + "-block") #{list[index-1]}#{unit} < width < #{val}#{unit}
+				each val, index in list
+					if index > 0
+						.size-block(class = "height-" + index + unit + "-block") #{list[index-1]}#{unit} < height < #{val}#{unit}
