@@ -1,0 +1,28 @@
+doctype html
+-var list = [];
+-for (var i = 0; i < 100; i++) { list[i] = i; }
+-list[100] = 1000;
+-list[101] = 10000;
+-list[102] = 100000;
+html
+	head
+		style
+			| .size-block { display: none }
+		each val, index in list
+			if index > 0
+				style
+					| 
+					| @media (min-device-width: #{list[index-1]}cm) and (max-device-width: #{val}cm) {
+					|     .size-block.width-#{index}-block { display: block }
+					| }
+					| @media (min-device-height: #{list[index-1]}cm) and (max-device-height: #{val}cm) {
+					|     .size-block.height-#{index}-block { display: block }
+					| }
+					| 
+	body
+		each val, index in list
+			if index > 0
+				.size-block(class = "width-" + index + "-block") #{list[index-1]}cm < width < #{val}cm
+		each val, index in list
+			if index > 0
+				.size-block(class = "height-" + index + "-block") #{list[index-1]}cm < height < #{val}cm
